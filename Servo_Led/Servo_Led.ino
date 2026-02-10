@@ -1,16 +1,15 @@
 #include <Servo.h>
 
-Servo myservo;  // create servo object to control a servo
-// twelve servo objects can be created on most boards
+Servo myservo;  
 const int analogPin = A0;
 const int servoPin = 9;
 const int ledRed = 12;
 const int ledGreen = 11;
 
-int pos = 0;    // variable to store the servo position
+int pos = 0;    
 
 void setup() {
-  myservo.attach(servoPin);  // attaches the servo on pin 9 to the servo object
+  myservo.attach(servoPin); 
   pinMode(ledRed, OUTPUT);
   pinMode(ledGreen, OUTPUT);
 }
@@ -19,13 +18,13 @@ void loop() {
   int analogVal = analogRead(analogPin);
   int mVal = map(analogVal, 0, 1023, 0, 180);
   pos = mVal;
-  myservo.write(pos);              // tell servo to go to position in variable 'pos'
-  if (pos > 150 || pos < 30){
-    digitalWrite(ledRed, HIGH);
-    digitalWrite(ledGreen, LOW);
-  } else {
+  myservo.write(pos);              
+  if (pos >= 30 || pos <= 150){     // 정상범위(30~150)이면 초록색 led 점등
     digitalWrite(ledGreen, HIGH);
     digitalWrite(ledRed, LOW);
+  } else {                          // 정상범위 벗어날 경우 빨간색 led 점등
+    digitalWrite(ledRed, HIGH);
+    digitalWrite(ledGreen, LOW);
   }
-  delay(15);                       // waits 15ms for the servo to reach the position
+  delay(15);                  
 }
