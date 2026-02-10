@@ -6,6 +6,7 @@ const int echoPin = 10;
 // defines variables
 long duration;
 int distance;
+int lastSpeed;
 void setup() {
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
   pinMode(echoPin, INPUT); // Sets the echoPin as an Input
@@ -25,12 +26,23 @@ void loop() {
 
   Serial.print("Distance: ");
   Serial.println(distance);
-  if (distance > 10){
-    digitalWrite(motorA1, HIGH);
-    digitalWrite(motorA2, LOW);
-  } else if (distance <= 10){
-    digitalWrite(motorA1, LOW);
-    digitalWrite(motorA2, LOW);
-  }  
-  delay(100);
+  int targetSpeed;
+  if (distance > 30) {
+    targetSpeed = 200;
+  } else if (distance > 5 && distance <= 30) {
+    targetSpeed = map(distance, 5, 30, 110, 200); 
+  } else {
+    targetSpeed = 0;
+  }
+
+  // 멈춰있다가 다시 움직여야 할 때 (킥 스타트)
+  if (lastSpeed == 0 && targetSpeed > 0) {
+    analogWrite(motorA1, 255); // 순간적으로 풀 파워
+    delay(50);                 // 아주 짧게 툭 쳐줌
+  }
+
+  analogWrite(motorA1, targetSpeed);
+  lastSpeed = targetSpeed; // 현재 속도 저장
+  
+  delay(50);
 }
