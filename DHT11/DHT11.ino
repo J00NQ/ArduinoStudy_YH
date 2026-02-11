@@ -10,6 +10,7 @@ int H;   // humidity readings are integers
 void setup()
 {
   Serial.begin(9600);
+  Serial.print("H(%), C(°C)\n");
 }
 
 void loop()
@@ -21,12 +22,11 @@ void loop()
   H = dht11.readHumidity();     // Reading the humidity index
 
   // Print the collected data in a row on the Serial Monitor
-  Serial.print("H: ");
   Serial.print(H);
-  Serial.print("\tC: ");
+  Serial.print(", ");
   Serial.println(C);
   // Serial.print("\tF: ");
   // Serial.println(F);
 
-  delay(1000);                // Wait one second before get another temperature reading
+  delay(2000);                // Wait one second before get another temperature reading
 }
